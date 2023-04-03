@@ -1,17 +1,17 @@
 import  createSchema  from 'part:@sanity/base/schema-creator'
 import  schemaTypes  from 'part:@sanity/base/schema-type'
 
-import blockContent from './blockContent'
 import category from './category'
-import author from './author'
+import dish from './dish'
 import restaurant from './restaurant'
+import featured from './featured'
 export default createSchema({
     name:'default',
     types:schemaTypes.concat([
         restaurant,
-        author, 
+        dish, 
         category, 
-        blockContent
+        featured
     ])
 })
 

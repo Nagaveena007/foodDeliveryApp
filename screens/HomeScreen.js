@@ -22,20 +22,25 @@ const [featuredCategories, setFeaturedCategories] =useState([])
       headerShown: false,
     });
   }, []);
- useEffect(() => {
-  createClient.fetch(
-    `*[_type== "featured"]{
-      ...,
-      restaurants[]->{
-        ...,
-      dishes[]->
-    }
-    }`
-  )
-.then((data)=>{
-  setFeaturedCategories(data)
-});
- }, []); 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await createClient.fetch(
+          `*[_type== "featured"]{
+            ...,
+            restaurants[]->{
+              ...,
+              dishes[]->
+            }
+          }`
+        );
+        setFeaturedCategories(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [createClient]);
  console.log(featuredCategories,'featuredCategories')
   return (
     <SafeAreaView className='bg-white pt-6 mt-8'>
@@ -71,29 +76,36 @@ const [featuredCategories, setFeaturedCategories] =useState([])
       contentContainerStyle={{
         paddingBottom:100,
       }}>
-        {/* Categories*/}
-        <Categories/>
-        {/* Featured Rows*/}
+           <Categories />
+        {featuredCategories?.map((category) => (
+          <FeaturedRow
+            key={category._id}
+            id={category._id}
+            title={category.name}
+            description={category.short_description}
+          />
+        ))}
+     {/*    <Categories/>
       <FeaturedRow
       title='Featured'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='1'
       />
-      {/* Tastey Discounts*/}
+     //Tastey Discounts
       <FeaturedRow
       title='Tastey Discounts'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='2'
       />
-      {/* Offer near you*/}
+     //Offer near you
       <FeaturedRow
       title='Offer near you!'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='3'
-      />
+      /> */}
       </ScrollView>
     </SafeAreaView>
   );
