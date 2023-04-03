@@ -7,21 +7,36 @@ import {
   ScrollView,
 
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Categories from "../components/Categories";
 import FeaturedRow from "../components/FeaturedRow";
+import createClient from "../sanity";
 const HomeScreen = () => {
   const navigation = useNavigation();
-
-  useLayoutEffect(() => {
+const [featuredCategories, setFeaturedCategories] =useState([])
+   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, []);
-
+ useEffect(() => {
+  createClient.fetch(
+    `*[_type== "featured"]{
+      ...,
+      restaurants[]->{
+        ...,
+      dishes[]->
+    }
+    }`
+  )
+.then((data)=>{
+  setFeaturedCategories(data)
+});
+ }, []); 
+ console.log(featuredCategories,'featuredCategories')
   return (
     <SafeAreaView className='bg-white pt-6 mt-8'>
       {/* Header*/}
@@ -74,7 +89,7 @@ const HomeScreen = () => {
       />
       {/* Offer near you*/}
       <FeaturedRow
-      title='Offer near you'
+      title='Offer near you!'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='3'

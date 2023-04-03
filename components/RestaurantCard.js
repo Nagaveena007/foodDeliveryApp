@@ -25,7 +25,7 @@ const RestaurantCard = ({
         < View className='flex-row items-center space-x-1'>
           <Octicons name="star" size={22} color="green" opacity={0.5} />
           <Text className='text-xs twxt-gray-500'>
-            <Text className='text-green-500 '>{rating} </Text> .{genre}
+            <Text className='text-green-500 '>{rating} </Text> . {genre}
           </Text> 
         </View>
       <View className='flex-row items-center space-x-1'>
