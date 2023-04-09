@@ -13,7 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Categories from "../components/Categories";
 import FeaturedRow from "../components/FeaturedRow";
-import createClient from "../sanity";
+import sanityClient from "../sanity";
 const HomeScreen = () => {
   const navigation = useNavigation();
 const [featuredCategories, setFeaturedCategories] =useState([])
@@ -22,10 +22,10 @@ const [featuredCategories, setFeaturedCategories] =useState([])
       headerShown: false,
     });
   }, []);
-  useEffect(() => {
+   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await createClient.fetch(
+        const data = await sanityClient.fetch(
           `*[_type== "featured"]{
             ...,
             restaurants[]->{
@@ -40,7 +40,24 @@ const [featuredCategories, setFeaturedCategories] =useState([])
       }
     };
     fetchData();
-  }, [createClient]);
+  }, [sanityClient]); 
+/*   useEffect(() => {
+    sanityClient
+      .fetch(
+        `
+    *[_type == "featured"]{
+      ...,
+      restaurants[]->{
+        ...,
+        dishes[]->
+      }
+    }
+    `
+      )
+      .then((data) => {
+        setFeaturedCategories(data);
+      });
+  }, []); */
  console.log(featuredCategories,'featuredCategories')
   return (
     <SafeAreaView className='bg-white pt-6 mt-8'>
@@ -76,36 +93,34 @@ const [featuredCategories, setFeaturedCategories] =useState([])
       contentContainerStyle={{
         paddingBottom:100,
       }}>
-           <Categories />
-        {featuredCategories?.map((category) => (
-          <FeaturedRow
-            key={category._id}
-            id={category._id}
-            title={category.name}
-            description={category.short_description}
-          />
-        ))}
-     {/*    <Categories/>
-      <FeaturedRow
+        <Categories />
+
+ {featuredCategories?.map((category) => (
+  <FeaturedRow
+    key={category._id}
+    id={category._id}
+    title={category.name}
+    description={category.short_description}
+  />
+))} 
+     {/*  <FeaturedRow
       title='Featured'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='1'
       />
-     //Tastey Discounts
       <FeaturedRow
       title='Tastey Discounts'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='2'
       />
-     //Offer near you
       <FeaturedRow
       title='Offer near you!'
       description='lorem ipsum'
       FeturedCategory='featured'
       id='3'
-      /> */}
+      />   */}
       </ScrollView>
     </SafeAreaView>
   );

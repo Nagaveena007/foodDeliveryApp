@@ -3,17 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
-import { TailwindProvider } from 'tailwindcss-react-native';
+import { store } from "./app/store";
+
+//import { TailwindProvider } from 'tailwindcss-react-native';
+
+import { Provider } from "react-redux";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <TailwindProvider>
+      <Provider store={store}>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Deliveroo" component={HomeScreen} />
       </Stack.Navigator>
-      </TailwindProvider>
+      </Provider>
     </NavigationContainer>
   );
 }

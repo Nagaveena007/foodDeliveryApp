@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Octicons } from '@expo/vector-icons';
+import { urlFor } from "../sanity";
+
 const RestaurantCard = ({
   id,
-  imgUrl,
-  title,
+  image,
+  name,
   rating,
   genre,
   address,
@@ -13,15 +15,18 @@ const RestaurantCard = ({
   long,
   lat
 }) => {
+
   return (
-    <TouchableOpacity className='bg-white mr-3 shadow'>
+    <TouchableOpacity 
+    className='bg-white mr-3 shadow'
+    >
       <Image source={{
-        uri: imgUrl.toString()
-      }}
+          uri: urlFor(image).url(),
+        }}
         className='h-36 w-64 rounded-sm'
       />
       < View className='px-3 pb-4'>
-        <Text className='pt-2 font-bold text-lg'>{title} </Text>
+        <Text className='pt-2 font-bold text-lg'>{name} </Text>
         < View className='flex-row items-center space-x-1'>
           <Octicons name="star" size={22} color="green" opacity={0.5} />
           <Text className='text-xs twxt-gray-500'>
