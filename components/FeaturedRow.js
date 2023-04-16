@@ -1,95 +1,90 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView,StyleSheet,Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import RestaurantCard from "./RestaurantCard";
-import sanityClient from "../sanity";
 import React, { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
-const FeaturedRow = ({ title, description, id }) => {
+const FeaturedRow = ({ 
+  id,
+  key,
+  addressss,
+  dishess,
+  genre,
+  image,
+  lat,
+  long,
+  name,
+  offer,
+  rating,
+  title,
+ }) => {
+  const { 
+    container,
+    featuredText,
+    titleText,
+    arrow,
 
-      const [restaurants, setRestaurants] = useState([]);
+  } = styles
 
-      useEffect(() => {
-        sanityClient
-          .fetch(
-            `
-        *[_type == "featured" && _id == $id]{
-          ...,
-          restaurants[]->{
-            ...,
-            dishes[]->,
-            type->{
-              name
-            }
-          }
-        }[0]
-        `,
-            { id }
-          )
-          .then((data) => {
-            setRestaurants(data?.restaurants);
-          });
-      }, [id]);
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('https://deliveroo-database.onrender.com/restaurants');
+        const data = await response.json();
+        setRestaurants(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <View>
-        <View className='mt-4 flex-row item-center justify-between px-4'>
-             <Text className='font-bold text-lg'>{title}</Text>
-            <AntDesign name="arrowright" size={24} color='#00CCBB' />
+      <View style={container}>
+        <Text style={featuredText}>Featured</Text>
+        {offer?.map((restaurantOffer) => 
+        (
+        <Text key={restaurantOffer.id} style={featuredText}>{restaurantOffer.featured}</Text>
+          ))}
+        <Ionicons name="arrow-forward-outline" color="#00CCBB" size={24} />
       </View>
-             <Text className='text-gray-500 px-4 font- text-xs'>{description}</Text>
-             <ScrollView 
-             horizontal
-             showsHorizontalScrollIndicator={false}
-             contentContainerStyle={{
-                paddingTop:10,
-                paddingHorizontal:15,
-              }}
-              className='pt-4'
-             >
-{/* Restaurant cards */}
-{restaurants.map((restaurant, index) => (
-  <RestaurantCard
- key={index} {...restaurant}
-  />
-))}
+      <Text style={titleText}>Special offeres</Text>
 
-                
-               {/*  <RestaurantCard
-                 id={1}
-                 imgUrl='https://www.daindiacurry.com/wp-content/uploads/2020/02/curry-overhead-1024x655.jpg'
-                 title='Indian curry house'
-                 rating={4.5}
-                 genre='Indian'
-                 address='Freiburg 79241'
-                 short_description='This is an short description'
-                 dishes={[]}
-                 long={20}
-                 lat={10}
-                />
-                <RestaurantCard
-                 id={2}
-                 imgUrl='https://madeinitaly.com.au/wp-content/uploads/2021/09/Made-In-Italy-Stanmore.jpeg'
-                 title='Gio-Gusto'
-                 rating={4.5}
-                 genre='Italian'
-                 address='Ihringen 79241'
-                 short_description='This is an short description'
-                 dishes={[]}
-                 long={20}
-                 lat={10}
-                />
-                <RestaurantCard
-                 id={3}
-                 imgUrl='https://prod-wolt-venue-images-cdn.wolt.com/5e0213d02936d4cdca857a51/819ec7e6e6589028c452bf91c8c375dc'
-                 title='sushi'
-                 rating={4.5}
-                 genre='Japanees'
-                 address='Ihringen 79241'
-                 short_description='This is an short description'
-                 dishes={[]}
-                 long={20}
-                 lat={10}
-                />
-              */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingTop: 10,
+          paddingHorizontal: 15,
+        }}
+        style={{ paddingTop: 4 }}
+      >
+        {restaurants.map((restaurant) => (
+          <RestaurantCard
+            key={restaurant.id}
+            {...restaurant}
+          />
+        ))}
+   
+      
+     {/*  <RestaurantCard
+       id={1}
+       image='https://www.daindiacurry.com/wp-content/uploads/2020/02/curry-overhead-1024x655.jpg'
+       title='Indian curry house'
+       rating={4.5}
+       genre='Indian'
+       address='Freiburg 79241'
+       short_description='This is an short description'
+       dishes={[]}
+       long={20}
+       lat={10}
+      />
+    */}
+              
              </ScrollView>
 
     </View>
@@ -97,3 +92,29 @@ const FeaturedRow = ({ title, description, id }) => {
 }
 export default FeaturedRow;
 
+const styles = StyleSheet.create({
+  container:{
+ marginTop: 4, 
+ flexDirection: 'row', 
+ alignItems: 'center', 
+ justifyContent: 'space-between', 
+ paddingHorizontal: 4
+
+},
+arrow:{
+  display:'flex',
+  right:0,
+  background:'transparent'
+},
+featuredText:{ 
+  fontWeight: 'bold', 
+  fontSize: 16,
+  flex:1, 
+  paddingLeft:15
+
+},
+titleText:{
+  paddingLeft:20,
+  color:'gray',
+},
+})

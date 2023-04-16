@@ -1,7 +1,6 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image,StyleSheet } from "react-native";
 import React from "react";
 import { Octicons } from '@expo/vector-icons';
-import { urlFor } from "../sanity";
 
 const RestaurantCard = ({
   id,
@@ -10,38 +9,99 @@ const RestaurantCard = ({
   rating,
   genre,
   address,
-  short_description,
   dishes,
   long,
   lat
 }) => {
-
+  const { 
+    touchableOpacity,
+    imageStyle,
+    textDeco,
+    textname,
+    textView,
+    textGenre,
+    textRating,
+    addressView,
+    addressText,
+    
+  } = styles
   return (
     <TouchableOpacity 
-    className='bg-white mr-3 shadow'
-    >
-      <Image source={{
-          uri: urlFor(image).url(),
+      style={touchableOpacity}>
+      <Image 
+        source={{
+          uri: image,
         }}
-        className='h-36 w-64 rounded-sm'
+        style={imageStyle}
       />
-      < View className='px-3 pb-4'>
-        <Text className='pt-2 font-bold text-lg'>{name} </Text>
-        < View className='flex-row items-center space-x-1'>
+      <View style={textDeco}>
+        <Text style={textname}>{name} </Text>
+        <View style={textView}>
           <Octicons name="star" size={22} color="green" opacity={0.5} />
-          <Text className='text-xs twxt-gray-500'>
-            <Text className='text-green-500 '>{rating} </Text> . {genre}
+          <Text style={textGenre}>
+            <Text style={textRating}>{rating} </Text> . {genre}
           </Text> 
         </View>
-      <View className='flex-row items-center space-x-1'>
-      <Octicons name="location" opacity={0.4} size={22} color="gray" />
-      <Text className='text-xs twxt-gray-500'>Nearby . {address}
-      </Text>
-      </View>
-
+        <View style={addressView}>
+          <Octicons name="location" opacity={0.4} size={22} color="gray" />
+          <Text style={addressText}>Nearby . {address}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 };
 
 export default RestaurantCard;
+const styles = StyleSheet.create({
+  touchableOpacity:{
+    backgroundColor: '#fff',
+    marginRight: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+  imageStyle:{
+    height: 150,
+    width: '100%',
+    objectFit:'contain',
+    borderRadius: 4,
+  },
+  textDeco:{
+    padding:13
+  },
+textname:{
+  paddingTop: 2, 
+  fontWeight: 'bold', 
+  fontSize: 16
+},
+textView:{
+  flexDirection: 'row', 
+  alignItems: 'center', 
+  justifyContent: 'flex-start', 
+  marginTop: 2,
+},
+textGenre:{
+  fontSize: 12, 
+  color: '#888'
+},
+textRating:{
+  fontWeight: 'bold', 
+  color: 'green'
+},
+addressView:{
+  flexDirection: 'row', 
+  alignItems: 'center', 
+  justifyContent: 'flex-start', 
+  marginTop: 2
+},
+addressText:{
+  fontSize: 12, 
+  color: '#888',
+  paddingLeft:10
+}
+})
