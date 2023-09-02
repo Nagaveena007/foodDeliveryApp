@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, Image,StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import React from "react";
-import { Octicons } from '@expo/vector-icons';
+import { Octicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const RestaurantCard = ({
   id,
@@ -11,9 +12,9 @@ const RestaurantCard = ({
   address,
   dishes,
   long,
-  lat
+  lat,
 }) => {
-  const { 
+  const {
     touchableOpacity,
     imageStyle,
     textDeco,
@@ -23,12 +24,25 @@ const RestaurantCard = ({
     textRating,
     addressView,
     addressText,
-    
-  } = styles
+  } = styles;
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("Restaurant", {
+          id,
+          image,
+          name,
+          rating,
+          genre,
+          address,
+          dishes,
+          long,
+          lat,
+        });
+      }}
       style={touchableOpacity}>
-      <Image 
+      <Image
         source={{
           uri: image,
         }}
@@ -40,7 +54,7 @@ const RestaurantCard = ({
           <Octicons name="star" size={22} color="green" opacity={0.5} />
           <Text style={textGenre}>
             <Text style={textRating}>{rating} </Text> . {genre}
-          </Text> 
+          </Text>
         </View>
         <View style={addressView}>
           <Octicons name="location" opacity={0.4} size={22} color="gray" />
@@ -53,10 +67,10 @@ const RestaurantCard = ({
 
 export default RestaurantCard;
 const styles = StyleSheet.create({
-  touchableOpacity:{
-    backgroundColor: '#fff',
+  touchableOpacity: {
+    backgroundColor: "#fff",
     marginRight: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -65,43 +79,43 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
   },
-  imageStyle:{
+  imageStyle: {
     height: 150,
-    width: '100%',
-    objectFit:'contain',
+    width: "100%",
+    objectFit: "contain",
     borderRadius: 4,
   },
-  textDeco:{
-    padding:13
+  textDeco: {
+    padding: 13,
   },
-textname:{
-  paddingTop: 2, 
-  fontWeight: 'bold', 
-  fontSize: 16
-},
-textView:{
-  flexDirection: 'row', 
-  alignItems: 'center', 
-  justifyContent: 'flex-start', 
-  marginTop: 2,
-},
-textGenre:{
-  fontSize: 12, 
-  color: '#888'
-},
-textRating:{
-  fontWeight: 'bold', 
-  color: 'green'
-},
-addressView:{
-  flexDirection: 'row', 
-  alignItems: 'center', 
-  justifyContent: 'flex-start', 
-  marginTop: 2
-},
-addressText:{
-  fontSize: 12, 
-  color: '#888',
-  paddingLeft:10
-}
-})
+  textname: {
+    paddingTop: 2,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  textView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: 2,
+  },
+  textGenre: {
+    fontSize: 12,
+    color: "#888",
+  },
+  textRating: {
+    fontWeight: "bold",
+    color: "green",
+  },
+  addressView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginTop: 2,
+  },
+  addressText: {
+    fontSize: 12,
+    color: "#888",
+    paddingLeft: 10,
+  },
+});
